@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.gradle.api.internal.project.ProjectInternal
 import org.jetbrains.gradle.ext.*
 import org.jetbrains.kotlin.ideaExt.*
 
@@ -47,6 +46,8 @@ if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
     }
 
     rootProject.afterEvaluate {
+        evaluationDependsOnChildren()
+
         rootProject.allprojects {
             idea {
                 module {
@@ -292,7 +293,6 @@ fun NamedDomainObjectContainer<TopLevelArtifact>.kotlinc() {
 
 fun NamedDomainObjectContainer<TopLevelArtifact>.ideaPlugin() {
     val ideaPluginProject = project(":prepare:idea-plugin")
-    (ideaPluginProject as ProjectInternal).evaluate()
     val libraries by ideaPluginProject.configurations
     val jpsPlugin by ideaPluginProject.configurations
 
